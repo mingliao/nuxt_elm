@@ -18,6 +18,10 @@ module.exports = {
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
     ]
   },
+  env: {
+    routerMode: 'history',
+    imgBaseUrl: 'http://images.cangdu.org/'
+  },
   /*
   ** Customize the progress-bar color
   */
@@ -38,6 +42,7 @@ module.exports = {
           exclude: /(node_modules)/
         })
       }
-    }
+    },
+    vendor: ['~/plugins/rem/rem']
   }
 }
