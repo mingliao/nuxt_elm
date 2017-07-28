@@ -58,7 +58,6 @@
     components: {
       headTop
     },
-    asyncData: {},
 //    mounted () {
 //      //  获取当前城市
 //      cityGuess().then(res => {
