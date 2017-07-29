@@ -5,6 +5,7 @@
   "author": "765132065@qq.com <765132065@qq.com>",
   "private": true,
   "dependencies": {
+    "axios": "^0.16.2",
     "nuxt": "latest"
   },
   "scripts": {

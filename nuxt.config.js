@@ -45,15 +45,7 @@ module.exports = {
         })
       }
     },
-    vendor: ['~/plugins/rem/rem', '~/plugins/fetch/fetch'],
-    modules: [
-      '@nuxtjs/proxy'
-    ],
-    proxy: [
-      'http://cangdu.org:8001/v1',
-      'http://cangdu.org:8001/v2',
-      'http://cangdu.org:8001/shopping'
-    ]
+    vendor: ['~/plugins/rem/rem', '~/plugins/fetch/fetch', '~/plugins/axios/axios']
     // proxy: {
     //   '/api': { target: 'http://cangdu.org:8001', ws: false }
     // }

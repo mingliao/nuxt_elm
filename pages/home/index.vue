@@ -45,11 +45,12 @@
 
 <script>
   import headTop from '~components/header/head'
-  import {cityGuess} from '~/service/getData'
+  import axios from '~plugins/axios/axios'
+//  import {cityGuess} from '~/service/getData'
   export default {
     data () {
       return {
-        guessCity: '',   // 当前城市
+//        guessCity: '',   // 当前城市
         guessCityid: '', // 当前城市id
         hotcity: [],     // 热门城市列表
         groupcity: {}   // 所有城市列表
@@ -58,66 +59,20 @@
     components: {
       headTop
     },
-    mounted () {
-      cityGuess().then(res => {
-        this.guessCity = res.name
-        this.guessCityid = res.id
-      })
-    },
-//    asyncData () {
-//      async () => {
-//        let [cityGuessRes] = await Promise.all([
-//          cityGuess()
-//        ])
-//        return {
-//          guessCity: cityGuessRes.name,
-//          guessCityid: cityGuessRes.id
-//        }
-//      }
-//      cityGuess().then(res => {
-//        this.guessCity = res.name
-//        this.guessCityid = res.id
-//      })
-//      async asyncData({ query, error }) {
-//        let pageRes = await axios.get('/api/post/page/0')
-//        let countRes = await axios.get('/api/post/count/published')
-//        return {
-//          posts: pageRes.data.list,
-//          total: countRes.data.result
-//        }
-//      }
 //    mounted () {
-//      //  获取当前城市
 //      cityGuess().then(res => {
 //        this.guessCity = res.name
 //        this.guessCityid = res.id
 //      })
-//
-//      // 获取热门城市
-//      hotcity().then(res => {
-//        this.hotcity = res
-//      })
-//
-//      // 获取所有城市
-//      groupcity().then(res => {
-//        this.groupcity = res
-//      })
 //    },
-//
-//
-//
-//    computed: {
-//      // 将获取的数据按照A-Z字母开头排序
-//      sortgroupcity () {
-//        let sortobj = {}
-//        for (let i = 65 i <= 90 i++) {
-//          if (this.groupcity[String.fromCharCode(i)]) {
-//            sortobj[String.fromCharCode(i)] = this.groupcity[String.fromCharCode(i)]
-//          }
-//        }
-//        return sortobj
-//      }
-//    },
+    async asyncData () {
+      let { data } = await axios.get(`/v1/cities`, {
+        params: {
+          type: 'guess'
+        }
+      })
+      return { guessCity: data.name }
+    },
     methods: {
       // 点击图标刷新页面
       reload () {
