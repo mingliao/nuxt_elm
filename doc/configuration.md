@@ -13,12 +13,11 @@
         proxyUrl: 'http://cangdu.org:8001'
       },
     ```
- 2. ```nuxt.config.js```做配置项目```dev: (process.env.NODE_ENV !== 'production'),```
- 3. ```fetch.js``` 里面做
+ 2. ```fetch.js``` 里面做
      ```
      let baseUrl = process.env.baseUrl
-       if (process.env.NODE_ENV !== 'production') {
+       if (process.env.NODE_ENV === 'development') {
          baseUrl = process.env.proxyUrl
        }
      ```
-通过以上配置，就可以使所有使用**fetch**的方法，访问的是代理的地址了。
+通过以上配置，就可以使所有使用**fetch**的方法，访问的是代理的地址了.

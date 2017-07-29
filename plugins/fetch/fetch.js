@@ -3,7 +3,7 @@
  */
 export default async(url = '', data = {}, type = 'GET', method = 'fetch') => {
   let baseUrl = process.env.baseUrl
-  if (process.env.NODE_ENV !== 'production') {
+  if (process.env.NODE_ENV === 'development') {
     baseUrl = process.env.proxyUrl
   }
   type = type.toUpperCase()

@@ -49,7 +49,6 @@ module.exports = {
     modules: [
       '@nuxtjs/proxy'
     ],
-    dev: (process.env.NODE_ENV !== 'production'),
     proxy: [
       'http://cangdu.org:8001/v1',
       'http://cangdu.org:8001/v2',
