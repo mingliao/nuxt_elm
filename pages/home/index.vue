@@ -50,9 +50,7 @@
   export default {
     data () {
       return {
-//        guessCity: '',   // 当前城市
-        guessCityid: '', // 当前城市id
-        hotcity: [],     // 热门城市列表
+//        hotcity: [],     // 热门城市列表
         groupcity: {}   // 所有城市列表
       }
     },
@@ -66,12 +64,11 @@
 //      })
 //    },
     async asyncData () {
-      let { data } = await axios.get(`/v1/cities`, {
-        params: {
-          type: 'guess'
-        }
-      })
-      return { guessCity: data.name }
+      let [{data}, hotcityRes] = await Promise.all([
+        axios.get(`/v1/cities`, {params: {type: 'guess'}}),
+        axios.get(`/v1/cities`, {params: {type: 'hot'}})
+      ])
+      return {guessCity: data.name, guessCityid: data.id, hotcity: hotcityRes.data}
     },
     methods: {
       // 点击图标刷新页面

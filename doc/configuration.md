@@ -21,5 +21,7 @@
        }
      ```
 通过以上配置，就可以使所有使用**fetch**的方法，访问的是代理的地址了.
+> dev的NODE_ENV 就是*development*
+如何请求数据看[data.md](./data.md)
 
 
