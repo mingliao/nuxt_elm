@@ -8,23 +8,21 @@
         <span>当前定位城市：</span>
         <span>定位不准时，请在城市列表中选择</span>
       </div>
-      <router-link :to="'/city/' + guessCityid" class="guess_city">
+      <nuxt-link :to="'/city/' + guessCityid" class="guess_city">
         <span>{{guessCity}}</span>
         <svg class="arrow_right">
           <use xmlns:xlink="http:// www.w3.org/1999/xlink" xlink:href="#arrow-right"></use>
         </svg>
-      </router-link>
+      </nuxt-link>
       <section id="hot_city_container">
         <h4 class="city_title">热门城市</h4>
         <ul class="citylistul clear">
-          <router-link  tag="li" v-for="item in hotcity" :to="'/city/' + item.id" :key="item.id">
+          <nuxt-link  tag="li" v-for="item in hotcity" :to="'/city/' + item.id" :key="item.id">
             {{item.name}}
-          </router-link>
+          </nuxt-link>
         </ul>
       </section>
     </nav>
-    <!--
-
     <section class="group_city_container">
       <ul class="letter_classify">
         <li v-for="(value, key, index) in sortgroupcity" :key="key"  class="letter_classify_li">
@@ -32,43 +30,47 @@
             <span v-if="index == 0">（按字母排序）</span>
           </h4>
           <ul class="groupcity_name_container citylistul clear">
-            <router-link  tag="li" v-for="item in value" :to="'/city/' + item.id" :key="item.id" class="ellipsis">
+            <nuxt-link  tag="li" v-for="item in value" :to="'/city/' + item.id" :key="item.id" class="ellipsis">
               {{item.name}}
-
-            </router-link>
+            </nuxt-link>
           </ul>
         </li>
       </ul>
-    </section>-->
+    </section>
   </div>
 </template>
 
 <script>
   import headTop from '~components/header/head'
   import axios from '~plugins/axios/axios'
-//  import {cityGuess} from '~/service/getData'
   export default {
-    data () {
-      return {
-//        hotcity: [],     // 热门城市列表
-        groupcity: {}   // 所有城市列表
-      }
-    },
     components: {
       headTop
     },
-//    mounted () {
-//      cityGuess().then(res => {
-//        this.guessCity = res.name
-//        this.guessCityid = res.id
-//      })
-//    },
     async asyncData () {
-      let [{data}, hotcityRes] = await Promise.all([
+      let [guessCityRes, hotCityRes, groupCityRes] = await Promise.all([
         axios.get(`/v1/cities`, {params: {type: 'guess'}}),
-        axios.get(`/v1/cities`, {params: {type: 'hot'}})
+        axios.get(`/v1/cities`, {params: {type: 'hot'}}),
+        axios.get(`/v1/cities`, {params: {type: 'group'}})
+
       ])
-      return {guessCity: data.name, guessCityid: data.id, hotcity: hotcityRes.data}
+      return {guessCity: guessCityRes.data.name,
+        guessCityid: guessCityRes.data.id,
+        hotcity: hotCityRes.data,
+        groupcity: groupCityRes.data
+      }
+    },
+    computed: {
+      // 将获取的数据按照A-Z字母开头排序
+      sortgroupcity () {
+        let sortobj = {}
+        for (let i = 65; i <= 90; i++) {
+          if (this.groupcity[String.fromCharCode(i)]) {
+            sortobj[String.fromCharCode(i)] = this.groupcity[String.fromCharCode(i)]
+          }
+        }
+        return sortobj
+      }
     },
     methods: {
       // 点击图标刷新页面
