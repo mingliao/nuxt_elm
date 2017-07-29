@@ -19,8 +19,10 @@ module.exports = {
     ]
   },
   env: {
+    baseUrl: '',
     routerMode: 'history',
-    imgBaseUrl: 'http://images.cangdu.org/'
+    imgBaseUrl: 'http://images.cangdu.org/',
+    proxyUrl: 'http://cangdu.org:8001'
   },
   /*
   ** Customize the progress-bar color
@@ -43,6 +45,18 @@ module.exports = {
         })
       }
     },
-    vendor: ['~/plugins/rem/rem']
+    vendor: ['~/plugins/rem/rem', '~/plugins/fetch/fetch'],
+    modules: [
+      '@nuxtjs/proxy'
+    ],
+    dev: (process.env.NODE_ENV !== 'production'),
+    proxy: [
+      'http://cangdu.org:8001/v1',
+      'http://cangdu.org:8001/v2',
+      'http://cangdu.org:8001/shopping'
+    ]
+    // proxy: {
+    //   '/api': { target: 'http://cangdu.org:8001', ws: false }
+    // }
   }
 }

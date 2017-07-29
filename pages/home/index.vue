@@ -45,7 +45,7 @@
 
 <script>
   import headTop from '~components/header/head'
-  //  import {cityGuess, hotcity, groupcity} from '../../service/getData'
+  import {cityGuess} from '~/service/getData'
   export default {
     data () {
       return {
@@ -58,6 +58,34 @@
     components: {
       headTop
     },
+    mounted () {
+      cityGuess().then(res => {
+        this.guessCity = res.name
+        this.guessCityid = res.id
+      })
+    },
+//    asyncData () {
+//      async () => {
+//        let [cityGuessRes] = await Promise.all([
+//          cityGuess()
+//        ])
+//        return {
+//          guessCity: cityGuessRes.name,
+//          guessCityid: cityGuessRes.id
+//        }
+//      }
+//      cityGuess().then(res => {
+//        this.guessCity = res.name
+//        this.guessCityid = res.id
+//      })
+//      async asyncData({ query, error }) {
+//        let pageRes = await axios.get('/api/post/page/0')
+//        let countRes = await axios.get('/api/post/count/published')
+//        return {
+//          posts: pageRes.data.list,
+//          total: countRes.data.result
+//        }
+//      }
 //    mounted () {
 //      //  获取当前城市
 //      cityGuess().then(res => {
@@ -82,7 +110,7 @@
 //      // 将获取的数据按照A-Z字母开头排序
 //      sortgroupcity () {
 //        let sortobj = {}
-//        for (let i = 65; i <= 90; i++) {
+//        for (let i = 65 i <= 90 i++) {
 //          if (this.groupcity[String.fromCharCode(i)]) {
 //            sortobj[String.fromCharCode(i)] = this.groupcity[String.fromCharCode(i)]
 //          }
