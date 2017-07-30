@@ -5,7 +5,7 @@ import getters from './getters'
 const state = {
   userInfo: null // 用户信息
 }
-const createStore = () => {
+const createStore = () => { // nuxt就是要一个方法，return new store，直接导出来不行。
   return new Vuex.Store({
     state,
     getters,
