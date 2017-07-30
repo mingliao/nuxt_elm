@@ -183,8 +183,8 @@ export const animate = (element, target, duration = 400, mode = 'ease-out', call
 
   // 获取目标属性单位和初始样式值
   Object.keys(target).forEach(attr => {
-    if (/[^\d^\.]+/gi.test(target[attr])) {
-      unit[attr] = target[attr].match(/[^\d^\.]+/gi)[0] || 'px'
+    if (/[^\d^.]+/gi.test(target[attr])) {
+      unit[attr] = target[attr].match(/[^\d^.]+/gi)[0] || 'px'
     } else {
       unit[attr] = 'px'
     }
@@ -194,12 +194,11 @@ export const animate = (element, target, duration = 400, mode = 'ease-out', call
   // 去掉传入的后缀单位
   Object.keys(target).forEach(attr => {
     if (unit[attr] === 'rem') {
-      target[attr] = Math.ceil(parseInt(target[attr])*rootSize)
+      target[attr] = Math.ceil(parseInt(target[attr]) * rootSize)
     } else {
       target[attr] = parseInt(target[attr])
     }
   })
-
 
   let flag = true // 假设所有运动到达终点
   const remberSpeed = {}// 记录上一个速度值,在ease-in模式下需要用到
@@ -210,30 +209,30 @@ export const animate = (element, target, duration = 400, mode = 'ease-out', call
       let iCurrent = attrStyle(attr) || 0 // 当前元素属性址
       let speedBase = 0 // 目标点需要减去的基础值，三种运动状态的值都不同
       let intervalTime // 将目标值分为多少步执行，数值越大，步长越小，运动时间越长
-      switch(mode) {
+      switch (mode) {
         case 'ease-out':
           speedBase = iCurrent
-          intervalTime = duration*5/400
+          intervalTime = duration * 5 / 400
           break
         case 'linear':
           speedBase = initState[attr]
-          intervalTime = duration*20/400
+          intervalTime = duration * 20 / 400
           break
         case 'ease-in':
           let oldspeed = remberSpeed[attr] || 0
-          iSpeed = oldspeed + (target[attr] - initState[attr])/duration
+          iSpeed = oldspeed + (target[attr] - initState[attr]) / duration
           remberSpeed[attr] = iSpeed
           break
         default:
           speedBase = iCurrent
-          intervalTime = duration*5/400
+          intervalTime = duration * 5 / 400
       }
       if (mode !== 'ease-in') {
         iSpeed = (target[attr] - speedBase) / intervalTime
         iSpeed = iSpeed > 0 ? Math.ceil(iSpeed) : Math.floor(iSpeed)
       }
       // 判断是否达步长之内的误差距离，如果到达说明到达目标点
-      switch(mode) {
+      switch (mode) {
         case 'ease-out':
           status = iCurrent !== target[attr]
           break

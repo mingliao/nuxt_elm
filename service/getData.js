@@ -1,4 +1,6 @@
 import fetch from '~/plugins/fetch/fetch'
+import {getStore} from '~/plugins/mUtils/mUtils'
+
 /**
  * 获取首页默认地址
  */
@@ -29,3 +31,5 @@ export const searchplace = (cityid, value) => fetch('/v1/pois', {
   city_id: cityid,
   keyword: value
 })
+
+export const getUser = () => fetch('/v1/user', {user_id: getStore('user_id')})
