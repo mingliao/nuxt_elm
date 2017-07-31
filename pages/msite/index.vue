@@ -14,6 +14,7 @@
 
 <script>
   import headTop from '~/components/header/head'
+//  import axios from '~/plugins/axios/axios'
   import {cityGuess} from '~/service/getData'
 
   export default {
@@ -22,6 +23,17 @@
         geoHash: ''
       }
     },
+   /* async asyncData ({params}) {
+      let result = {}
+      console.log('param.geohash', params.geohash)
+      if (!params.geohash) {
+        const {data} = await axios.get(`/v1/cities`, {params: {type: 'guess'}})
+        result.geohash = data.latitude + ',' + data.longitude
+      } else {
+        result.geohash = params.geohash
+      }
+      return result
+    }, */
     async beforeMount () {
       console.log('this.$route.query.geohash', this.$route.query.geohash)
       if (!this.$route.query.geohash) {
