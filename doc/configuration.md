@@ -24,4 +24,6 @@
 > dev的NODE_ENV 就是*development*
 如何请求数据看[data.md](./data.md)
 
-
+## 重新安装module找不到
+有时候重新安装代码，会发现程序报错*This dependency was not found: ~components/header/head in .*
+这时候主要是路径找不到了。只要把路径补充完整就可以了。```import headTop from '~/components/header/head'```

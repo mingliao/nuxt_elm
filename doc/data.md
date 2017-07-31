@@ -44,3 +44,27 @@
        },
        },
    ```
+
+### Unhandled promise rejection: Error: socket hang up
+
+ 有时候网页加载的时候，使用*asyncData()*多个请求一起发送```await Promise.all```，有请求没有回来(没有响应)，会出现**Unhandled promise rejection: Error: socket hang up**
+ 这时候导致所有的请求都无法响应，程序无法加载，这时候应该使用分段请求的方式，避免长时间无响应，程序出错。
+ ```
+ async asyncData () {
+       let guessCityRes = axios.get(`/v1/cities`, {params: {type: 'guess'}})
+       let hotCityRes = axios.get(`/v1/cities`, {params: {type: 'hot'}})
+       let groupCityRes = axios.get(`/v1/cities`, {params: {type: 'group'}})
+       return {guessCity: guessCityRes.data ? guessCityRes.data.name : '',
+         guessCityid: guessCityRes.data ? guessCityRes.data.id : '',
+         hotcity: hotCityRes.data,
+         groupcity: groupCityRes.data
+       }
+     }
+ ```
+ 不过这种情况，会碰到有的请求先返回，有的没有返回的情况，这时候，返回的数据可能就为*null*了.
+ 遇到这种情况，有几种解决思路:
+ 1. **这种情况需要验证一下**建议对**axios**进行封装，超时的请求，错误和正确的请求单独处理。
+ 2. 使用**mounted**客户端请求数据
+
+ 
+

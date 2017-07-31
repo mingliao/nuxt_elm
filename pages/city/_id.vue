@@ -24,9 +24,9 @@
 </template>
 
 <script>
-import headTop from '~components/header/head'
-import axios from '~plugins/axios/axios'
-import {getStore, setStore, removeStore} from '~plugins/mUtils/mUtils'
+import headTop from '~/components/header/head'
+import axios from '~/plugins/axios/axios'
+import {getStore, setStore, removeStore} from '~/plugins/mUtils/mUtils'
 import {searchplace} from '~/service/getData'
 export default {
   data () {

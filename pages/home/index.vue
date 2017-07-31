@@ -41,25 +41,52 @@
 </template>
 
 <script>
-  import headTop from '~components/header/head'
-  import axios from '~plugins/axios/axios'
+  import headTop from '~/components/header/head'
+  import {cityGuess, hotcity, groupcity} from '~/service/getData'
+
+  //  import axios from '~/plugins/axios/axios'
   export default {
+    data () {
+      return {
+        guessCity: '',   // 当前城市
+        guessCityid: '', // 当前城市id
+        hotcity: [],     // 热门城市列表
+        groupcity: {}   // 所有城市列表
+      }
+    },
+    mounted () {
+      // 获取当前城市
+      cityGuess().then(res => {
+        this.guessCity = res.name
+        this.guessCityid = res.id
+      })
+
+      // 获取热门城市
+      hotcity().then(res => {
+        this.hotcity = res
+      })
+
+      // 获取所有城市
+      groupcity().then(res => {
+        this.groupcity = res
+      })
+    },
     components: {
       headTop
     },
-    async asyncData () {
-      let [guessCityRes, hotCityRes, groupCityRes] = await Promise.all([
-        axios.get(`/v1/cities`, {params: {type: 'guess'}}),
-        axios.get(`/v1/cities`, {params: {type: 'hot'}}),
-        axios.get(`/v1/cities`, {params: {type: 'group'}})
-
-      ])
-      return {guessCity: guessCityRes.data.name,
-        guessCityid: guessCityRes.data.id,
-        hotcity: hotCityRes.data,
-        groupcity: groupCityRes.data
-      }
-    },
+//    async asyncData () {
+//      let [guessCityRes, hotCityRes, groupCityRes] = await Promise.all([
+//        axios.get(`/v1/cities`, {params: {type: 'guess'}}),
+//        axios.get(`/v1/cities`, {params: {type: 'hot'}}),
+//        axios.get(`/v1/cities`, {params: {type: 'group'}})
+//
+//      ])
+//      return {guessCity: guessCityRes.data.name,
+//        guessCityid: guessCityRes.data.id,
+//        hotcity: hotCityRes.data,
+//        groupcity: groupCityRes.data
+//      }
+//    },
     computed: {
       // 将获取的数据按照A-Z字母开头排序
       sortgroupcity () {
