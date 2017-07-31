@@ -33,6 +33,19 @@
        },
    ```
    > 注意es6的同构解析.
+   或者使用多次请求分阶段请求
+   ```
+   async asyncData () {
+         let guessCityRes = axios.get(`/v1/cities`, {params: {type: 'guess'}})
+         let hotCityRes = axios.get(`/v1/cities`, {params: {type: 'hot'}})
+         let groupCityRes = axios.get(`/v1/cities`, {params: {type: 'group'}})
+         return {guessCity: guessCityRes.data ? guessCityRes.data.name : '',
+           guessCityid: guessCityRes.data ? guessCityRes.data.id : '',
+           hotcity: hotCityRes.data,
+           groupcity: groupCityRes.data
+         }
+       }
+   ```
 2. 只在客户端使用fetch，如何配置这个代理，参考[configuration](./configuration.md)不要使用asyncData请求数据，使用mounted来处理。
  * 使用方式同vue2-elm里面的源代码，如```home/home.vue```
    ```

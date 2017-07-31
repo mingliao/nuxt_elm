@@ -34,7 +34,8 @@ export default {
       placelist: [],
       inputValue: '',
       historytitle: '',
-      placeNone: 0
+      placeNone: 0,
+      placeHistory: []
     }
   },
   components: {
