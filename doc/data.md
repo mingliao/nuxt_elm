@@ -78,6 +78,18 @@
  遇到这种情况，有几种解决思路:
  1. **这种情况需要验证一下**建议对**axios**进行封装，超时的请求，错误和正确的请求单独处理。
  2. 使用**mounted**客户端请求数据
-
  
-
+ ## 请求参数
+ *asyncData*请求的参数如果是从url，get方式过来的例如:*xxxx?name=aa&&age=12*
+ 那么这些参数都是放在*param.query*这种方式同路由*$router.query*一样。可以用下面的方式去获取
+ ```
+ async asyncData (params) {//这个可以简化成{query}，下面的就是query了。
+       console.log('param.geohash', params.query)
+ }
+ ```
+ 如果这些参数是放在使用url，restful风格过来的如:*xxxx/_id*那么这些参数是放在params里面了。
+ ```
+  async asyncData ({params}) {
+     let { data } = await axios.get(`/v1/cities/${params.id}`)
+   },
+ ```

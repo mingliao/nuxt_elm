@@ -7,6 +7,9 @@
             <line x1="14" y1="14" x2="20" y2="20" style="stroke:rgb(255,255,255);stroke-width:2"/>
           </svg>
         </router-link>
+        <router-link to="/home" slot="msite-title" class="msite_title">
+          <span class="title_text ellipsis">{{msietTitle}}</span>
+        </router-link>
       </head-top>
     </div>
 </template>
@@ -20,7 +23,8 @@
   export default {
     data () {
       return {
-        geoHash: ''
+        geoHash: '',
+        msietTitle: '请选择地址...'
       }
     },
    /* async asyncData ({params}) {
