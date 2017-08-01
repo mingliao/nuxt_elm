@@ -11,6 +11,21 @@
           <span class="title_text ellipsis">{{msietTitle}}</span>
         </router-link>
       </head-top>
+      <nav class="msite_nav">
+        <div class="swiper-container" v-if="foodTypes.length">
+          <div class="swiper-wrapper">
+            <div class="swiper-slide food_types_container" v-for="(item, index) in foodTypes" :key="index">
+              <router-link :to="{path: '/food', query: {geohash, title: foodItem.title, restaurant_category_id: getCategoryId(foodItem.link)}}" v-for="foodItem in item" :key="foodItem.id" class="link_to_food">
+                <figure>
+                  <img :src="imgBaseUrl + foodItem.image_url">
+                  <figcaption>{{foodItem.title}}</figcaption>
+                </figure>
+              </router-link>
+            </div>
+          </div>
+          <div class="swiper-pagination"></div>
+        </div>
+      </nav>
     </div>
 </template>
 
@@ -18,26 +33,42 @@
 <script>
   import headTop from '~/components/header/head'
 //  import axios from '~/plugins/axios/axios'
-  import {cityGuess} from '~/service/getData'
+  import {cityGuess, msiteFoodTypes} from '~/service/getData'
 
   export default {
+    head: {
+      script: [
+        { src: '/swiper/swiper.min.js' }
+      ],
+      link: [
+        { rel: 'stylesheet', href: '/swiper/swiper.min.css' }
+      ]
+    },
     data () {
       return {
         geoHash: '',
+        foodTypes: [],
         msietTitle: '请选择地址...'
       }
     },
-   /* async asyncData ({params}) {
-      let result = {}
-      console.log('param.geohash', params.geohash)
-      if (!params.geohash) {
-        const {data} = await axios.get(`/v1/cities`, {params: {type: 'guess'}})
-        result.geohash = data.latitude + ',' + data.longitude
-      } else {
-        result.geohash = params.geohash
-      }
-      return result
-    }, */
+    mounted () {
+      // 获取导航食品类型列表
+      msiteFoodTypes(this.geohash).then(res => {
+        let resLength = res.length
+        let resArr = [...res] // 返回一个新的数组
+        let foodArr = []
+        for (let i = 0, j = 0; i < resLength; i += 8, j++) {
+          foodArr[j] = resArr.splice(0, 8)
+        }
+        this.foodTypes = foodArr
+      }).then(() => {
+        // 初始化swiper
+        new Swiper('.swiper-container', {
+          pagination: '.swiper-pagination',
+          loop: true
+        })
+      })
+    },
     async beforeMount () {
       console.log('this.$route.query.geohash', this.$route.query.geohash)
       if (!this.$route.query.geohash) {
@@ -47,6 +78,7 @@
         this.geohash = this.$route.query.geohash
       }
     },
+
     components: {
       headTop
     }
