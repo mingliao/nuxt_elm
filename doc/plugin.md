@@ -5,4 +5,13 @@
   * 使用插件引入（放入*plugins*）或者使用静态文件（放入*static*）文件夹中
 2. 引入*minify js*文件
   * 参考[how to add a local minify js](https://github.com/nuxt/nuxt.js/issues/1250)
-  
+3. 引入*swiper*等插件之后，如何使用。
+  * 将这些插件挂载到*window*下，使用:
+    ```
+     window.Swiper('.swiper-container', {
+              pagination: '.swiper-pagination',
+              loop: true
+            })
+    ```
+  * 参考[这里](https://github.com/nuxt/nuxt.js/issues/1251)
+ 
