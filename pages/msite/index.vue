@@ -51,6 +51,16 @@
         msietTitle: '请选择地址...'
       }
     },
+    methods: {
+      getCategoryId (url) {
+        let urlData = decodeURIComponent(url.split('=')[1].replace('&target_name', ''))
+        if (/restaurant_category_id/gi.test(urlData)) {
+          return JSON.parse(urlData).restaurant_category_id.id
+        } else {
+          return ''
+        }
+      }
+    },
     mounted () {
       // 获取导航食品类型列表
       msiteFoodTypes(this.geohash).then(res => {
@@ -63,7 +73,7 @@
         this.foodTypes = foodArr
       }).then(() => {
         // 初始化swiper
-        new Swiper('.swiper-container', {
+        window.Swiper('.swiper-container', {
           pagination: '.swiper-pagination',
           loop: true
         })
