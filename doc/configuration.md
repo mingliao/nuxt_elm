@@ -27,3 +27,16 @@
 ## 重新安装module找不到
 有时候重新安装代码，会发现程序报错*This dependency was not found: ~components/header/head in .*
 这时候主要是路径找不到了。只要把路径补充完整就可以了。```import headTop from '~/components/header/head'```
+
+### 在页面中获取*nuxt.config.js*中的*env*数据
+在page中使用*async*配置项：
+```
+ asyncData ({env}) {
+      return {
+        imgBaseUrl: env.imgBaseUrl
+      }
+    },
+```
+通过这种方式就可以注入到页面中使用这个变量了。
+
+

@@ -21,7 +21,7 @@ module.exports = {
   env: {
     baseUrl: '',
     routerMode: 'history',
-    imgBaseUrl: 'http://images.cangdu.org/',
+    imgBaseUrl: 'https://fuss10.elemecdn.com/',
     proxyUrl: 'http://cangdu.org:8001'
   },
   /*

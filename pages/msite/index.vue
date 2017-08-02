@@ -36,6 +36,11 @@
   import {cityGuess, msiteFoodTypes} from '~/service/getData'
 
   export default {
+    asyncData ({env}) {
+      return {
+        imgBaseUrl: env.imgBaseUrl
+      }
+    },
     head: {
       script: [
         { src: '/swiper/swiper.min.js' }
