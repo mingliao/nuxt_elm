@@ -43,3 +43,9 @@ export const msiteFoodTypes = geohash => fetch('/v2/index_entry', {
   group_type: '1',
   'flags[]': 'F'
 })
+
+/**
+ * 获取msite页面地址信息
+ */
+
+export const msiteAdress = geohash => fetch('/v2/pois/' + geohash)

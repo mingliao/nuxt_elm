@@ -26,21 +26,33 @@
           <div class="swiper-pagination"></div>
         </div>
       </nav>
+      <div class="shop_list_container">
+        <header class="shop_header">
+          <svg class="shop_icon">
+            <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#shop"></use>
+          </svg>
+          <span class="shop_header_title">附近商家</span>
+        </header>
+        <shop-list v-if="hasGetData" :geohash="geohash"></shop-list>
+      </div>
+      <foot-guide></foot-guide>
     </div>
 </template>
 
 
 <script>
+  import {mapMutations} from 'vuex'
   import headTop from '~/components/header/head'
+  import shopList from '~/components/common/shoplist'
 //  import axios from '~/plugins/axios/axios'
-  import {cityGuess, msiteFoodTypes} from '~/service/getData'
+  import {cityGuess, msiteFoodTypes, msiteAdress} from '~/service/getData'
 
   export default {
-    asyncData ({env}) {
+    /* asyncData ({env}) {
       return {
         imgBaseUrl: env.imgBaseUrl
       }
-    },
+    }, */
     head: {
       script: [
         { src: '/swiper/swiper.min.js' }
@@ -51,12 +63,17 @@
     },
     data () {
       return {
-        geoHash: '',
+        geohash: '',
+        imgBaseUrl: 'https://fuss10.elemecdn.com', // 图片域名地址
         foodTypes: [],
+        hasGetData: false,
         msietTitle: '请选择地址...'
       }
     },
     methods: {
+      ...mapMutations([
+        'RECORD_ADDRESS', 'SAVE_GEOHASH'
+      ]),
       getCategoryId (url) {
         let urlData = decodeURIComponent(url.split('=')[1].replace('&target_name', ''))
         if (/restaurant_category_id/gi.test(urlData)) {
@@ -92,10 +109,20 @@
       } else {
         this.geohash = this.$route.query.geohash
       }
+      this.SAVE_GEOHASH(this.geohash)
+    // 获取位置信息
+      let res = await msiteAdress(this.geohash)
+      console.log('res-----', res)
+      this.msietTitle = res.name
+    // 记录当前经度纬度
+      this.RECORD_ADDRESS(res)
+
+      this.hasGetData = true
     },
 
     components: {
-      headTop
+      headTop,
+      shopList
     }
   }
 </script>
