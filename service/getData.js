@@ -49,3 +49,25 @@ export const msiteFoodTypes = geohash => fetch('/v2/index_entry', {
  */
 
 export const msiteAdress = geohash => fetch('/v2/pois/' + geohash)
+
+export const shopList = (latitude, longitude, offset, restaurantCategoryId = '', restaurantCategoryIds = '', orderBy = '', deliveryMode = '', supportIds = []) => {
+  let supportStr = ''
+  supportIds.forEach(item => {
+    if (item.status) {
+      supportStr += '&supportIds[]=' + item.id
+    }
+  })
+  let data = {
+    latitude,
+    longitude,
+    offset,
+    limit: '20',
+    'extras[]': 'activities',
+    keyword: '',
+    restaurant_category_id: restaurantCategoryId,
+    'restaurantCategoryIds[]': restaurantCategoryIds,
+    order_by: orderBy,
+    'deliveryMode[]': deliveryMode + supportStr
+  }
+  return fetch('/shopping/restaurants', data)
+}

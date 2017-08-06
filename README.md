@@ -5,7 +5,7 @@
 # 参考项目
 1. [vue2-elm](https://github.com/bailicangdu/vue2-elm)
 2. [justyeh](https://github.com/justyeh/justyeh.com)
-
+3. [nuxt-weather](https://github.com/NicoPennec/nuxt-weather)
 
 ## Build Setup
 

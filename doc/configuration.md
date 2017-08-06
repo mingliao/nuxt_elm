@@ -38,5 +38,16 @@
     },
 ```
 通过这种方式就可以注入到页面中使用这个变量了。
+或者使用这种方式在[configuration-env](https://nuxtjs.org/api/configuration-env/#the-env-property)介绍的方式
+在组件中使用**process.env.xx**来使用这个环境变量。
+```
+data () {
+      return {
+        imgBaseUrl: process.env.imgBaseUrl
+      }
+    },
+```
+或者使用 *another way is to use the Store to save the loaded data*;
+
 
 

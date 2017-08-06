@@ -93,3 +93,6 @@
      let { data } = await axios.get(`/v1/cities/${params.id}`)
    },
  ```
+ ## Async data in components?
+ component 里面没有```AsyncData``` 方法，查阅[Async data in components?](https://nuxtjs.org/faq/async-data-components/#async-data-in-components-)
+ 
