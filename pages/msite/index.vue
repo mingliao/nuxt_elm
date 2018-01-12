@@ -1,30 +1,33 @@
 <template>
     <div>
-      <head-top signin-up='msite'>
-        <router-link :to="'/search/' + geohash" class="link_search" slot="search">
+      <head-top signin-up="msite">
+        <nuxt-link :to="'/search/geohash'"
+                   class="link_search"
+                   slot="search">
           <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" version="1.1">
             <circle cx="8" cy="8" r="7" stroke="rgb(255,255,255)" stroke-width="1" fill="none"/>
             <line x1="14" y1="14" x2="20" y2="20" style="stroke:rgb(255,255,255);stroke-width:2"/>
           </svg>
-        </router-link>
+        </nuxt-link>
         <router-link to="/home" slot="msite-title" class="msite_title">
           <span class="title_text ellipsis">{{msietTitle}}</span>
         </router-link>
       </head-top>
       <nav class="msite_nav">
-        <div class="swiper-container" v-if="foodTypes.length">
-          <div class="swiper-wrapper">
-            <div class="swiper-slide food_types_container" v-for="(item, index) in foodTypes" :key="index">
-              <router-link :to="{path: '/food', query: {geohash, title: foodItem.title, restaurant_category_id: getCategoryId(foodItem.link)}}" v-for="foodItem in item" :key="foodItem.id" class="link_to_food">
-                <figure>
-                  <img :src="imgBaseUrl + foodItem.image_url">
-                  <figcaption>{{foodItem.title}}</figcaption>
-                </figure>
-              </router-link>
-            </div>
+        <div class="swiper-container" v-if="foodTypes.length" v-swiper:mySwiper="swiperOption">
+          <div class="swiper-wrapper" >
+              <div class="swiper-slide food_types_container" v-for="(item, index) in foodTypes" :key="index">
+                <router-link :to="{path: '/food', query: {geohash, title: foodItem.title, restaurant_category_id: getCategoryId(foodItem.link)}}" v-for="foodItem in item" :key="foodItem.id" class="link_to_food">
+                  <figure>
+                    <img :src="imgBaseUrl + foodItem.image_url">
+                    <figcaption>{{foodItem.title}}</figcaption>
+                  </figure>
+                </router-link>
+              </div>
           </div>
           <div class="swiper-pagination"></div>
         </div>
+        <img src="~/assets/images/fl.svg" class="fl_back animation_opactiy" v-else>
       </nav>
       <div class="shop_list_container">
         <header class="shop_header">
@@ -35,100 +38,95 @@
         </header>
         <shop-list v-if="hasGetData" :geohash="geohash"></shop-list>
       </div>
-      <foot-guide></foot-guide>
     </div>
 </template>
 
 
 <script>
-  import {mapMutations} from 'vuex'
-  import headTop from '~/components/header/head'
-  import shopList from '~/components/common/shoplist'
-//  import axios from '~/plugins/axios/axios'
-  import {cityGuess, msiteFoodTypes, msiteAdress} from '~/service/getData'
+import {cityGuess, msiteAdress, msiteFoodTypes} from '~/service/getData'
+import {mapMutations} from 'vuex'
+import headTop from '~/components/header/head'
+import shopList from '~/components/common/shoplist'
 
-  export default {
-    /* asyncData ({env}) {
-      return {
-        imgBaseUrl: env.imgBaseUrl
-      }
-    }, */
-    head: {
-      script: [
-        { src: '/swiper/swiper.min.js' }
-      ],
-      link: [
-        { rel: 'stylesheet', href: '/swiper/swiper.min.css' }
-      ]
-    },
-    data () {
-      return {
-        geohash: '',
-        imgBaseUrl: 'https://fuss10.elemecdn.com', // 图片域名地址
-        foodTypes: [],
-        hasGetData: false,
-        msietTitle: '请选择地址...'
-      }
-    },
-    methods: {
-      ...mapMutations([
-        'RECORD_ADDRESS', 'SAVE_GEOHASH'
-      ]),
-      getCategoryId (url) {
-        let urlData = decodeURIComponent(url.split('=')[1].replace('&target_name', ''))
-        if (/restaurant_category_id/gi.test(urlData)) {
-          return JSON.parse(urlData).restaurant_category_id.id
-        } else {
-          return ''
+export default {
+  data () {
+    return {
+      geohash: '', // city页面传递过来的地址geohash
+      msietTitle: '请选择地址...', // msiet页面头部标题
+      foodTypes: [], // 食品分类列表
+      hasGetData: false, // 是否已经获取地理位置数据，成功之后再获取商铺列表信息
+      imgBaseUrl: 'https://fuss10.elemecdn.com', // 图片域名地址
+      swiperOption: {
+        loop: true,
+        slidesPerView: 'auto',
+        centeredSlides: true,
+        spaceBetween: 30,
+        pagination: {
+          el: '.swiper-pagination'
+          //          dynamicBullets: true
+        },
+        on: {
+          slideChange () {
+            // console.log('onSlideChangeEnd', this)
+          },
+          tap () {
+            // console.log('onTap', this)
+          }
         }
       }
-    },
-    mounted () {
-      // 获取导航食品类型列表
-      msiteFoodTypes(this.geohash).then(res => {
-        let resLength = res.length
-        let resArr = [...res] // 返回一个新的数组
-        let foodArr = []
-        for (let i = 0, j = 0; i < resLength; i += 8, j++) {
-          foodArr[j] = resArr.splice(0, 8)
-        }
-        this.foodTypes = foodArr
-      }).then(() => {
-        // 初始化swiper
-        window.Swiper('.swiper-container', {
-          pagination: '.swiper-pagination',
-          loop: true
-        })
-      })
-    },
-    async beforeMount () {
-      console.log('this.$route.query.geohash', this.$route.query.geohash)
-      if (!this.$route.query.geohash) {
-        const address = await cityGuess()
-        this.geohash = address.latitude + ',' + address.longitude
-      } else {
-        this.geohash = this.$route.query.geohash
-      }
-      this.SAVE_GEOHASH(this.geohash)
+    }
+  },
+  components: {
+    headTop,
+    shopList
+  },
+  async beforeMount () {
+    if (!this.$route.query.geohash) {
+      const address = await cityGuess()
+      this.geohash = address.latitude + ',' + address.longitude
+    } else {
+      this.geohash = this.$route.query.geohash
+    }
+
+    // 保存geohash 到vuex
+    this.SAVE_GEOHASH(this.geohash)
     // 获取位置信息
-      let res = await msiteAdress(this.geohash)
-      console.log('res-----', res)
-      this.msietTitle = res.name
+    let res = await msiteAdress(this.geohash)
+    this.msietTitle = res.name
     // 记录当前经度纬度
-      this.RECORD_ADDRESS(res)
-
-      this.hasGetData = true
-    },
-
-    components: {
-      headTop,
-      shopList
+    this.RECORD_ADDRESS(res)
+    this.hasGetData = true
+  },
+  mounted () {
+    // 获取导航食品类型列表
+    msiteFoodTypes(this.geohash).then(res => {
+      let resLength = res.length
+      let resArr = [...res] // 返回一个新的数组
+      let foodArr = []
+      for (let i = 0, j = 0; i < resLength; i += 8, j++) {
+        foodArr[j] = resArr.splice(0, 8)
+      }
+      this.foodTypes = foodArr
+    })
+  },
+  methods: {
+    ...mapMutations([
+      'RECORD_ADDRESS', 'SAVE_GEOHASH'
+    ]),
+    // 解码url地址，求去restaurant_category_id值
+    getCategoryId (url) {
+      let urlData = decodeURIComponent(url.split('=')[1].replace('&target_name', ''))
+      if (/restaurant_category_id/gi.test(urlData)) {
+        return JSON.parse(urlData).restaurant_category_id.id
+      } else {
+        return ''
+      }
     }
   }
+}
 </script>
-
 <style lang="scss" scoped>
-  @import '~assets/style/mixin';
+  @import "~assets/style/mixin";
   .link_search{
     left: .8rem;
     @include wh(.9rem, .9rem);
@@ -162,6 +160,7 @@
       @include wh(100%, 100%);
     }
   }
+
   .food_types_container{
     display:flex;
     flex-wrap: wrap;
@@ -195,9 +194,9 @@
       .shop_header_title{
         color: #999;
         @include font(0.55rem, 1.6rem);
+        padding-left: 0.5rem;
       }
     }
   }
 
 </style>
-

@@ -30,7 +30,7 @@ export const removeStore = name => {
  */
 export const getStyle = (element, attr, NumberMode = 'int') => {
   let target
-  //  scrollTop 获取方式不同，没有它不属于style，而且只有document.body才能用
+  // scrollTop 获取方式不同，没有它不属于style，而且只有document.body才能用
   if (attr === 'scrollTop') {
     target = element.scrollTop
   } else if (element.currentStyle) {
@@ -135,13 +135,15 @@ export const showBack = callback => {
 
   // 判断是否达到目标点
   const showBackFun = () => {
-    if (document.body.scrollTop > 500) {
+    return true
+    /* if (document.body.scrollTop > 500) {
       callback(true)
     } else {
       callback(false)
-    }
+    } */
   }
 }
+
 /**
  * 运动效果
  * @param {HTMLElement} element   运动对象，必选
@@ -167,6 +169,7 @@ export const animate = (element, target, duration = 400, mode = 'ease-out', call
     callback = mode
     mode = 'ease-out'
   }
+
   // 获取dom样式
   const attrStyle = attr => {
     if (attr === 'opacity') {
@@ -204,7 +207,7 @@ export const animate = (element, target, duration = 400, mode = 'ease-out', call
   const remberSpeed = {}// 记录上一个速度值,在ease-in模式下需要用到
   element.timer = setInterval(() => {
     Object.keys(target).forEach(attr => {
-      let iSpeed = 0  // 步长
+      let iSpeed = 0 // 步长
       let status = false // 是否仍需运动
       let iCurrent = attrStyle(attr) || 0 // 当前元素属性址
       let speedBase = 0 // 目标点需要减去的基础值，三种运动状态的值都不同

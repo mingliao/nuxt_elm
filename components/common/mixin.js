@@ -1,4 +1,4 @@
-import { getStyle } from '~/plugins/mUtils/mUtils'
+import { getStyle } from '~/plugins/mUtils'
 export const loadMore = {
   directives: {
     'load-more': {

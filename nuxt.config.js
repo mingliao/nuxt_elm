@@ -3,7 +3,7 @@ module.exports = {
   ** Headers of the page
   */
   head: {
-    title: 'elm',
+    title: 'vue2-elm-nuxt',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, minimal-ui' },
@@ -19,24 +19,28 @@ module.exports = {
     ]
   },
   env: {
+    routerMode: 'hash',
     baseUrl: '',
-    routerMode: 'history',
-    imgBaseUrl: 'http://images.cangdu.org/',
-    proxyUrl: 'http://cangdu.org:8001'
+    proxyUrl: 'http://cangdu.org:8001', // http://cangdu.org:8001 http://localhost:8000
+    imgBaseUrl: 'http://cangdu.org:8001/img/'
   },
   /*
-  ** Customize the progress-bar color
+  ** Customize the progress bar color
   */
   loading: { color: '#3B8070' },
+  plugins: [{src: '~/plugins/vue-awesome-swiper', ssr: false}],
+  css: [
+    'swiper/dist/css/swiper.css'
+  ],
   /*
   ** Build configuration
   */
   build: {
     /*
-    ** Run ESLINT on save
+    ** Run ESLint on save
     */
     extend (config, ctx) {
-      if (ctx.isClient) {
+      if (ctx.dev && ctx.isClient) {
         config.module.rules.push({
           enforce: 'pre',
           test: /\.(js|vue)$/,
@@ -45,9 +49,6 @@ module.exports = {
         })
       }
     },
-    vendor: ['~/plugins/rem/rem', '~/plugins/fetch/fetch', '~/plugins/axios/axios']
-    // proxy: {
-    //   '/api': { target: 'http://cangdu.org:8001', ws: false }
-    // }
+    vendor: ['~/plugins/rem', '~/plugins/fetch', '~/plugins/axios']
   }
 }

@@ -4,11 +4,11 @@
 </template>
 
 <script>
-export default {
-  fetch ({ route, redirect }) {
-    if (route.name === 'index') {
-      redirect('/home')
+  export default {
+    fetch ({ route, redirect }) {
+      if (route.name === 'index') {
+        redirect('/home')
+      }
     }
   }
-}
 </script>

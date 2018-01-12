@@ -1,13 +1,9 @@
 {
-  "name": "nuxt_elm",
+  "name": "vue2-elm-nuxt",
   "version": "1.0.0",
-  "description": "a project by elm",
+  "description": "Nuxt.js project",
   "author": "765132065@qq.com <765132065@qq.com>",
   "private": true,
-  "dependencies": {
-    "axios": "^0.16.2",
-    "nuxt": "latest"
-  },
   "scripts": {
     "dev": "nuxt",
     "build": "nuxt build",
@@ -16,21 +12,25 @@
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
     "precommit": "npm run lint"
   },
+  "dependencies": {
+    "axios": "^0.17.1",
+    "fastclick": "^1.0.6",
+    "iscroll": "^5.2.0",
+    "nuxt": "^1.0.0-rc11",
+    "showdown": "^1.6.4",
+    "vue-awesome-swiper": "^3.1.0"
+  },
   "devDependencies": {
-    "@nuxtjs/proxy": "^1.1.1",
-    "babel-eslint": "^7.1.1",
-    "coffee-loader": "^0.7.3",
-    "coffee-script": "^1.12.7",
-    "cross-env": "^5.0.1",
-    "eslint": "^3.15.0",
-    "eslint-config-standard": "^6.2.1",
-    "eslint-loader": "^1.6.1",
-    "eslint-plugin-html": "^2.0.0",
-    "eslint-plugin-promise": "^3.4.1",
-    "eslint-plugin-standard": "^2.0.1",
-    "node-sass": "^4.5.3",
-    "pug": "^2.0.0-beta6",
-    "pug-loader": "^2.3.0",
+    "babel-eslint": "^7.2.3",
+    "eslint": "^4.3.0",
+    "eslint-config-standard": "^10.2.1",
+    "eslint-loader": "^1.9.0",
+    "eslint-plugin-html": "^3.1.1",
+    "eslint-plugin-import": "^2.7.0",
+    "eslint-plugin-node": "^5.1.1",
+    "eslint-plugin-promise": "^3.5.0",
+    "eslint-plugin-standard": "^3.0.1",
+    "node-sass": "^4.7.2",
     "sass-loader": "^6.0.6"
   }
 }

@@ -49,5 +49,10 @@ data () {
 ```
 或者使用 *another way is to use the Store to save the loaded data*;
 
+## layout配置
+全局的样式，或者一些需要静态引入的文件都可以用layout来处理，layout也是一个vue文件
+通过*head*配置项引入css,js静态文件，
+
+
 
 

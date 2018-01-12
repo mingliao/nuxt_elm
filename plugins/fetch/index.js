@@ -1,7 +1,7 @@
 /**
  * Created by think on 2017/7/28.
  */
-export default async(url = '', data = {}, type = 'GET', method = 'fetch') => {
+export default async (url = '', data = {}, type = 'GET', method = 'fetch') => {
   let baseUrl = process.env.baseUrl
   if (process.env.NODE_ENV === 'development') {
     baseUrl = process.env.proxyUrl
