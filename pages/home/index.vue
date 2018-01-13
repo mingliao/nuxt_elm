@@ -44,7 +44,7 @@
 
 <script>
     import {cityGuess, hotcity, groupcity} from '~/service/getData'
-    import headTop from '@/components/header/head'
+    import headTop from '~/components/header/head'
     export default {
       name: 'pageHome',
       data () {
