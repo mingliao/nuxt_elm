@@ -12,7 +12,7 @@ export const loadMore = {
         let oldScrollTop
         let scrollEl
         let heightEl
-        let scrollType = el.attributes.type && el.attributes.type.value
+        let scrollType = el.attributes.type && el.attributes.type.value // 取得元素自定义属性
         let scrollReduce = 2
         if (scrollType === 2) {
           scrollEl = el
@@ -53,7 +53,7 @@ export const loadMore = {
 
         const loadMore = () => {
           if (scrollEl.scrollTop + windowHeight >= height + setTop + paddingBottom + marginBottom - scrollReduce) {
-            binding.value()
+            binding.value()// 这里就是v-load-more="xx"，这里的xx就是对外暴露的接口了，可以调用外部的命令
           }
         }
       }
