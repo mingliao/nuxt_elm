@@ -25,7 +25,7 @@
 <script>
   import {mapState, mapActions} from 'vuex'
   export default {
-    name: 'head',
+    name: 'headTop',
     props: ['signinUp', 'headTitle', 'goBack'],
     computed: {
       ...mapState([

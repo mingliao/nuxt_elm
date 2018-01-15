@@ -37,6 +37,7 @@
           <span class="shop_header_title">附近商家</span>
         </header>
         <shop-list v-if="hasGetData" :geohash="geohash"></shop-list>
+        <foot-guide></foot-guide>
       </div>
     </div>
 </template>
@@ -46,6 +47,7 @@
 import {cityGuess, msiteAdress, msiteFoodTypes} from '~/service/getData'
 import {mapMutations} from 'vuex'
 import headTop from '~/components/header/head'
+import footGuide from '~/components/footer/footGuide'
 import shopList from '~/components/common/shoplist'
 
 export default {
@@ -78,6 +80,7 @@ export default {
   },
   components: {
     headTop,
+    footGuide,
     shopList
   },
   async beforeMount () {

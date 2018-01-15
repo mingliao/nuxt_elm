@@ -101,26 +101,22 @@ export const loadMore = (element, callback) => {
 /**
  * 显示返回顶部按钮，开始、结束、运动 三个过程中调用函数判断是否达到目标点
  */
-export const showBack = callback => {
+export const showBack = function (handle) {
   let requestFram
   let oldScrollTop
-
   document.addEventListener('scroll', () => {
     showBackFun()
   }, false)
   document.addEventListener('touchstart', () => {
     showBackFun()
   }, {passive: true})
-
   document.addEventListener('touchmove', () => {
     showBackFun()
   }, {passive: true})
-
   document.addEventListener('touchend', () => {
     oldScrollTop = document.body.scrollTop
     moveEnd()
   }, {passive: true})
-
   const moveEnd = () => {
     requestFram = requestAnimationFrame(() => {
       if (document.body.scrollTop !== oldScrollTop) {
@@ -132,15 +128,13 @@ export const showBack = callback => {
       showBackFun()
     })
   }
-
   // 判断是否达到目标点
   const showBackFun = () => {
-    return true
-    /* if (document.body.scrollTop > 500) {
-      callback(true)
+    if (document.body.scrollTop > 500) {
+      handle(true)
     } else {
-      callback(false)
-    } */
+      handle(false)
+    }
   }
 }
 
