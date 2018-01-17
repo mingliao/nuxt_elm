@@ -3,7 +3,7 @@
       <head-top :head-title="headTitle" goBack="true"></head-top>
       <section class="sort_container">
         <div class="sort_item" :class="{choose_type:sortBy == 'food'}">
-          <div class="sort_item_container" >
+          <div class="sort_item_container" @click="chooseType('food')">
             <div class="sort_item_border">
               <span :class="{category_title: sortBy == 'food'}">{{foodTitle}}</span>
               <svg width="10" height="10" xmlns="http://www.w3.org/2000/svg" version="1.1" class="sort_icon">
@@ -73,6 +73,25 @@ export default {
     ...mapMutations([
       'RECORD_ADDRESS'
     ]),
+    chooseType (type) {
+      if (this.sortBy !== type) {
+        this.sortBy = type
+        // food选项中头部标题发生改变，需要特殊处理
+        if (type === 'food') {
+          this.foodTitle = '分类'
+        } else {
+          // 将foodTitle 和 headTitle 进行同步
+          this.foodTitle = this.headTitle
+        }
+      } else {
+        // 再次点击相同选项时收回列表
+        this.sortBy = ''
+        if (type === 'food') {
+          // 将foodTitle 和 headTitle 进行同步
+          this.foodTitle = this.headTitle
+        }
+      }
+    },
     async initData () {
       this.headTitle = this.$route.query.title
       this.foodTitle = this.headTitle
@@ -120,6 +139,9 @@ export default {
       /*padding-top: .3rem;*/
       border-right: .025rem solid #e4e4e4;
     }
+    .sort_icon {
+      transition: all .3s;
+    }
     .category_title {
 
     }
@@ -130,5 +152,18 @@ export default {
     top:3.6rem;
     width: 100%;
     left:0;
+  }
+  .choose_type{
+    .sort_item_container{
+
+      .category_title{
+        color: $blue;
+      }
+      .sort_icon{
+
+        transform: rotate(180deg);
+        fill:$blue;
+      }
+    }
   }
 </style>
