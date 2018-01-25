@@ -103,3 +103,8 @@ export const searchRestaurant = (geohash, keyword) => fetch('/v4/restaurants', {
   keyword,
   type: 'search'
 })
+
+export const foodCategory = (latitude, longitude) => fetch('/shopping/v2/restaurant/category', {
+  latitude,
+  longitude
+})

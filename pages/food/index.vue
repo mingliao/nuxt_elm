@@ -11,7 +11,38 @@
               </svg>
             </div>
           </div>
+          <transition name="showlist" v-show="category">
+            <section v-show="sortBy == 'food'" class="category_container sort_detail_type">
+              <section class="category_left">
+                <ul>
+                  <li v-for="(item, index) in category" :key="index" class="category_left_li" :class="{category_active:restaurant_category_id == item.id}" >
+                    <section>
+                      <img :src="getImgPath(item.image_url)" v-if="index" class="category_icon">
+                      <span>{{item.name}}</span>
+                    </section>
+                    <section>
+                      <span class="category_count">{{item.count}}</span>
+                      <svg v-if="index" width="8" height="8" xmlns="http://www.w3.org/2000/svg" version="1.1" class="category_arrow" >
+                        <path d="M0 0 L6 4 L0 8"  stroke="#bbb" stroke-width="1" fill="none"/>
+                      </svg>
+                    </section>
+                  </li>
+                </ul>
+              </section>
+              <section class="category_right">
+                <ul>
+                  <li v-for="(item, index) in categoryDetail" v-if="index" :key="item.id" class="category_right_li" @click="getCategoryIds(item.id, item.name)" :class="{category_right_choosed: restaurant_category_ids == item.id || (!restaurant_category_ids)&&index == 0}">
+                    <span>{{item.name}}</span>
+                    <span>{{item.count}}</span>
+                  </li>
+                </ul>
+              </section>
+            </section>
+          </transition>
 
+          <!--<transition name="showlist" v-show="category">
+
+          </transition>-->
         </div>
         <div class="sort_item">
           <div class="sort_item_container" >
@@ -34,6 +65,9 @@
           </div>
         </div>
       </section>
+      <transition name="showcover">
+        <div class="back_cover" v-show="sortBy"></div>
+      </transition>
       <section class="shop_list_container">
         <shop-list v-if="latitude" :geohash="geohash"></shop-list>
       </section>
@@ -43,17 +77,22 @@
 import headTop from '~/components/header/head'
 import shopList from '~/components/common/shoplist'
 import {mapState, mapMutations} from 'vuex'
-import {msiteAdress} from '~/service/getData'
+import {getImgPath} from '~/components/common/mixin'
+import {msiteAdress, foodCategory} from '~/service/getData'
 
 export default {
   name: 'food',
+  mixins: [getImgPath],
   data () {
     return {
       geohash: '', // city页面传递过来的地址geohash
       headTitle: '', // msiet页面头部标题
       foodTitle: '', // 排序左侧头部标题
       sortBy: '', // 筛选的条件
-      category: null // category分类左侧数据
+      category: null, // category分类左侧数据
+      categoryDetail: null,
+      restaurant_category_ids: '', // 筛选类型的id
+      restaurant_category_id: '' // 食品类型id值
 
     }
   },
@@ -96,12 +135,22 @@ export default {
       this.headTitle = this.$route.query.title
       this.foodTitle = this.headTitle
       this.geohash = this.$route.query.geohash
+      this.restaurant_category_id = this.$route.query.restaurant_category_id
+
       if (!this.latitude) {
         // 获取位置信息
         let res = await msiteAdress(this.geohash)
         // 记录当前经度纬度进入vuex
         this.RECORD_ADDRESS(res)
       }
+      // 获取category分类左侧数据
+      this.category = await foodCategory(this.latitude, this.longitude)
+      // 初始化时定位当前category分类左侧默认选择项，在右侧展示出其sub_categories列表
+      this.category.forEach(item => {
+        if (this.restaurant_category_id === `${item.id}`) {
+          this.categoryDetail = item.sub_categories
+        }
+      })
     }
   }
 
@@ -166,4 +215,83 @@ export default {
       }
     }
   }
+  .sort_detail_type{
+    display: flex;
+    width: 100%;
+    position: absolute;
+    display:flex;
+    top: 1.6rem;
+    left: 0;
+    border-top: 0.025rem solid $bc;
+    background-color: #fff;
+  }
+  .category_container{
+    .category_left{
+      flex: 1;
+      height: 16rem;
+      overflow-y: auto;
+      background-color: #f1f1f1;
+      span {
+        @include sc(0.5rem,#666);
+        line-height: 1.8rem;
+      }
+      .category_left_li {
+        @include fj;
+        padding: 0 0.5rem;
+        .category_icon {
+          @include wh(.8rem,.8rem);
+          vertical-align: middle;
+          margin-right: .2rem;
+        }
+        .category_count{
+          background-color: #ccc;
+          @include sc(.4rem, #fff);
+          padding: 0 .1rem;
+          border: 0.025rem solid #ccc;
+          border-radius: 0.8rem;
+          vertical-align: middle;
+          margin-right: 0.25rem;
+        }
+        .category_arrow{
+          vertical-align: middle;
+        }
+        &.category_active{
+          background-color: #fff;
+        }
+      }
+    }
+    .category_right{
+      flex: 1;
+      background-color: #fff;
+      padding-left: 0.5rem;
+      height: 16rem;
+      overflow-y: auto;
+      .category_right_li{
+        @include fj;
+        height: 1.8rem;
+        line-height: 1.8rem;
+        padding-right: 0.5rem;
+        border-bottom: 0.025rem solid $bc;
+        span{
+          color: #666;
+        }
+      }
+      .category_right_choosed{
+        span{
+          color: $blue;
+        }
+      }
+    }
+  }
+
+  .showlist-enter-active, .showlist-leave-active {
+    //中间状态。
+    transition: all .5s;
+    transform: translateY(0);
+  }
+  .showlist-enter, .showlist-leave-to {
+    opacity: 0;
+    transform: translateY(-100%);//最开始和最后的状态
+  }
+
 </style>

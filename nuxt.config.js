@@ -21,7 +21,7 @@ module.exports = {
   env: {
     routerMode: 'hash',
     baseUrl: '',
-    proxyUrl: 'http://cangdu.org:8001', // http://cangdu.org:8001 http://localhost:8000
+    proxyUrl: ' http://cangdu.org:8001', // http://cangdu.org:8001 http://localhost:8000
     imgBaseUrl: 'http://cangdu.org:8001/img/'
   },
   /*
