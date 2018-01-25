@@ -108,3 +108,23 @@ export const foodCategory = (latitude, longitude) => fetch('/shopping/v2/restaur
   latitude,
   longitude
 })
+
+/**
+ * 获取food页面的配送方式
+ */
+
+export const foodDelivery = (latitude, longitude) => fetch('/shopping/v1/restaurants/delivery_modes', {
+  latitude,
+  longitude,
+  kw: ''
+})
+
+/**
+ * 获取food页面的商家属性活动列表
+ */
+
+export const foodActivity = (latitude, longitude) => fetch('/shopping/v1/restaurants/activity_attributes', {
+  latitude,
+  longitude,
+  kw: ''
+})
