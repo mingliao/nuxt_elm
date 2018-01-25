@@ -15,7 +15,7 @@
             <section v-show="sortBy == 'food'" class="category_container sort_detail_type">
               <section class="category_left">
                 <ul>
-                  <li v-for="(item, index) in category" :key="index" class="category_left_li" :class="{category_active:restaurant_category_id == item.id}" >
+                  <li v-for="(item, index) in category" :key="index" class="category_left_li" :class="{category_active:restaurant_category_id == item.id}" @click="selectCategoryName(item.id, index)">
                     <section>
                       <img :src="getImgPath(item.image_url)" v-if="index" class="category_icon">
                       <span>{{item.name}}</span>
@@ -112,6 +112,24 @@ export default {
     ...mapMutations([
       'RECORD_ADDRESS'
     ]),
+    // 选中Category左侧列表的某个选项时，右侧渲染相应的sub_categories列表
+    selectCategoryName (id, index) {
+      // 第一个选项 -- 全部商家 因为没有自己的列表，所以点击则默认获取选所有数据
+      if (index === 0) {
+        this.restaurant_category_ids = null
+        this.sortBy = ''
+        // 不是第一个选项时，右侧展示其子级sub_categories的列表
+      } else {
+        this.restaurant_category_id = id
+        this.categoryDetail = this.category[index].sub_categories
+      }
+    },
+    // 选中Category右侧列表的某个选项时，进行筛选，重新获取数据并渲染
+    getCategoryIds (id, name) {
+      this.restaurant_category_ids = id
+      this.sortBy = ''
+      this.foodTitle = this.headTitle = name
+    },
     chooseType (type) {
       if (this.sortBy !== type) {
         this.sortBy = type
@@ -284,6 +302,16 @@ export default {
     }
   }
 
+  .back_cover {
+    position: fixed;
+    left: 0;
+    top: 1.3rem;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(90,90,90,0.5);
+    z-index: 11;
+  }
+
   .showlist-enter-active, .showlist-leave-active {
     //中间状态。
     transition: all .5s;
@@ -292,6 +320,12 @@ export default {
   .showlist-enter, .showlist-leave-to {
     opacity: 0;
     transform: translateY(-100%);//最开始和最后的状态
+  }
+  .showcover-enter, .showcover-leave-to {
+    opacity: 0;
+  }
+  .showcover-enter-active, .showcover-leave-active {
+    transition: all .5s;
   }
 
 </style>
